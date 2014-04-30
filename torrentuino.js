@@ -4,19 +4,19 @@ var _       = require('lodash');
 
 //setup
 
-var leds = _.range(4, 13);
+var leds = _.range(4, 13 + 1);
 var ledObj = [];
 var infiniteLoop = true;
 
 leds.forEach(function(l) {
-    ledObj[] = new arduino.Led({
+    ledObj.push(new arduino.Led({
         board: board,
         pin: l
-    });
+    }));
 });
 
 var resetLeds = function() {
-    for(var i = 0; i =< ledObj.length; i++) {
+    for(var i = 0; i < ledObj.length; i++) {
         ledObj[i].off();
     }
 };
@@ -31,9 +31,11 @@ while(infiniteLoop) {
     resetLeds();
 
     //turn on correct LEDs
-    for var i = 0; i < completedBlock; i++) {
+    for(var i = 0; i < completedBlock; i++) {
         ledObj[i].on();
     }
 
     ledObj[completedBlock + 1].blink();
+
+    setTimeout(1000);
 };

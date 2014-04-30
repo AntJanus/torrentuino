@@ -6,7 +6,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var torrentuino = require('torrentuino');
+var torrentuino = require('./torrentuino');
 var app = express();
 
 // all environments
