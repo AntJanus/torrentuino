@@ -3,7 +3,7 @@ var board   = new arduino.Board({
         debug: true
     });
 var _       = require('lodash');
-
+var torrentApi = require('./torrentapi');
 //setup
 
 var leds = _.range(4, 13 + 1);
@@ -70,21 +70,23 @@ board.on('ready', function() {
     var count = 0;
 
     setInterval(function() {
-        var internalClone = _.cloneDeep(internalLed);
-        count++;
-        var skip = [];
-        var data = 50;
-        var completedBlock = Math.floor(data / 10);
+        torrentAPI.listTorrents('downloading', function(response) {
+            var internalClone = _.cloneDeep(internalLed);
+            count++;
+            var skip = [];
+            var data = 50;
+            var completedBlock = Math.floor(data / 10);
 
-        internalClone = resetLeds(internalClone);
+            internalClone = resetLeds(internalClone);
 
-        //turn on correct LEDs
-        for(var i = 0; i < completedBlock; i++) {
-            internalClone[i].state = 'on';
-        }
+            //turn on correct LEDs
+            for(var i = 0; i < completedBlock; i++) {
+                internalClone[i].state = 'on';
+            }
 
-        customBlink(completedBlock);
-        skip.push(completedBlock);
-        processLeds(internalClone, skip);
+            customBlink(completedBlock);
+            skip.push(completedBlock);
+            processLeds(internalClone, skip);
+        });
     }, 2000);
 });
