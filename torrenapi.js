@@ -1,14 +1,17 @@
 var url = require('url');
 var http = require('http');
+var cheerio = require('cheerio');
 
 function torrentAPI() {
-    this.globalOptions = {
-        ip: '127.0.0.1',
-        port: '61137',
+    var globalOptions = {
+        hostname: '127.0.0.1',
+        port: '12345',
         username: 'admin',
         password: '123456',
         protocol: 'http'
     };
+
+    var token = '';
 
     this.statusCodes = {
         started: 1,
@@ -23,10 +26,19 @@ function torrentAPI() {
     };
 
     this.buildBaseUrl = function() {
-       this.globalOptions.url = `protocol + '://' + username + ':' + password + '@' + ip + ':' + port + 'gui';
+       globalOptions.url = globalOptions.protocol + '://' + globalOptions.username + ':' + globalOptions.password + '@' + globalOptions.ip + ':' + globalOptions.port + 'gui';
 
        return this;
-    }
+    };
+
+    this.refreshToken = function(callback) {
+        
+        http.get(url, function(res) {
+            $ = cheerio.load(res.body);
+            token = $('#token').text();
+            callback(res.body);
+        });
+    };
 
     this.listTorrents = function(status, callback) {
        http.get(this.globalOptions.url + '?list=1', function(res) {
@@ -45,6 +57,7 @@ function torrentAPI() {
     };
 
     this.buildBaseUrl();
+    this.refreshToken();
 
     return this;
 }
