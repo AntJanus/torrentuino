@@ -74,7 +74,7 @@ board.on('ready', function() {
             var internalClone = _.cloneDeep(internalLed);
             count++;
             var skip = [];
-            var data = 50;
+            var data = 100;
             var completedBlock = Math.floor(data / 10);
 
             internalClone = resetLeds(internalClone);
@@ -88,5 +88,5 @@ board.on('ready', function() {
             skip.push(completedBlock);
             processLeds(internalClone, skip);
         });
-    }, 2000);
+    }, 500);
 });
