@@ -55,19 +55,21 @@ function torrentAPI() {
        });
     };
 
-    this.options = function(options) {
-      if (options) {
-          _.extend(globalOptions, options);
-          this.buildBaseUrl();
-          return this;
-      } else {
-        return globalOptions;
-      }
+    this.setGlobalOptions = function(options) {
+      _.extend(globalOptions, options);
+      this.buildBaseUrl();
+      return this;
     };
 
-    this.buildAuthOptions();
-    this.buildBaseUrl();
-    this.refreshToken();
+    this.getGlobalOptions = function() {
+        return globalOptions;
+    }
+
+    this.init = function() {
+        this.buildAuthOptions();
+        this.buildBaseUrl();
+        this.refreshToken();
+    };
 
     return this;
 }
